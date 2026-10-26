@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kiwi Automation — парсинг, отчёты, Telegram-боты</title>
   <meta name="description" content="Автоматизация для бизнеса и агентств: парсинг в Excel, отчёты, Telegram-боты. Понятные цены, бесплатный тест 1–2 часа.">
-  <meta name="theme-color" content="#f7f3e8">
+  <meta name="theme-color" content="#f7f3e8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1210" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +20,7 @@
       --green-2: #6fae4a;
       --line: rgba(21, 33, 19, .13);
       --line-strong: rgba(78, 143, 53, .35);
+      --btn-text: #fff;
       --max: 1040px;
     }
     * { box-sizing: border-box; }
@@ -52,7 +54,7 @@
       transition: .18s ease; white-space: nowrap;
     }
     .btn:hover { transform: translateY(-1px); border-color: var(--line-strong); }
-    .btn-primary { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn-primary { background: var(--green); color: var(--btn-text); border-color: var(--green); }
     .btn-primary:hover { background: var(--green-2); border-color: var(--green-2); }
     .btn-ghost { background: transparent; }
 
@@ -124,6 +126,31 @@
 
     footer { border-top: 1px solid var(--line); padding: 20px 0 30px; color: var(--muted); font-size: 13px; }
     .footer-row { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1210;
+        --card: #111d16;
+        --text: #f1f6ee;
+        --muted: #a9b9ab;
+        --green: #a8d96b;
+        --green-2: #8fce5b;
+        --line: rgba(183, 226, 122, .16);
+        --line-strong: rgba(183, 226, 122, .38);
+        --btn-text: #0a130b;
+      }
+      body {
+        background:
+          radial-gradient(900px 500px at 82% -10%, rgba(143, 206, 91, .12), transparent 60%),
+          var(--bg);
+      }
+      .agency {
+        background: #14231a;
+        border-color: rgba(168, 217, 107, .24);
+      }
+      .step span { background: rgba(168, 217, 107, .12); }
+      .price-card li { border-color: var(--line); }
+    }
 
     @media (max-width: 800px) {
       .nav-links { display: none; }
