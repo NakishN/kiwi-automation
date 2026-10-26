@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiwi Automation — парсинг, отчёты, Telegram-боты</title>
+  <meta name="description" content="Автоматизация рутины для бизнеса и агентств: парсинг в Excel, автоматические отчёты, Telegram-боты, интеграции. Бесплатный тест 1–2 часа.">
+  <meta property="og:title" content="Kiwi Automation — автоматизация рутины">
+  <meta property="og:description" content="Парсинг, отчёты, Telegram-боты и интеграции. Беру техническую часть под вашим брендом.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0f1f17">
+  <style>
+    :root {
+      --bg: #0b1210;
+      --panel: #111b17;
+      --panel-2: #16241e;
+      --text: #eef5f0;
+      --muted: #9fb3a8;
+      --green: #7ee2a8;
+      --green-2: #35b97a;
+      --line: rgba(126, 226, 168, .16);
+      --radius: 18px;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(900px 500px at 75% -5%, rgba(53,185,122,.16), transparent 60%),
+        radial-gradient(700px 400px at 5% 20%, rgba(126,226,168,.08), transparent 60%),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, auto, 56px 56px, 56px 56px;
+    }
+    header { padding: 22px 0; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      display: grid; place-items: center; color: #08130d; font-weight: 900;
+      box-shadow: 0 8px 30px rgba(53,185,122,.25);
+    }
+    .nav-links { display: flex; gap: 22px; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 18px; border-radius: 12px; font-weight: 700; font-size: 14px;
+      border: 1px solid var(--line); background: var(--panel); color: var(--text);
+      transition: .2s ease; white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(126,226,168,.4); }
+    .btn-primary { background: var(--green); color: #07130c; border-color: transparent; }
+    .btn-primary:hover { background: #99f0bc; }
+    .btn-ghost { background: transparent; }
+    .hero { padding: 68px 0 42px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--green); font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .12em; margin-bottom: 18px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(126,226,168,.12); }
+    h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -.045em; margin: 0 0 20px; }
+    h1 .accent { color: var(--green); }
+    .lead { font-size: clamp(17px, 2.2vw, 21px); color: var(--muted); max-width: 720px; margin: 0 0 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 34px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; }
+    .badge {
+      font-size: 13px; color: var(--muted); padding: 8px 12px; border: 1px solid var(--line);
+      border-radius: 999px; background: rgba(17,27,23,.7);
+    }
+    section { padding: 46px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    h2 { font-size: clamp(26px, 3.6vw, 40px); letter-spacing: -.03em; margin: 0; }
+    .section-head p { color: var(--muted); max-width: 520px; margin: 0; }
+    .grid { display: grid; gap: 16px; }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .card {
+      background: linear-gradient(180deg, rgba(22,36,30,.9), rgba(17,27,23,.9));
+      border: 1px solid var(--line); border-radius: var(--radius); padding: 22px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 17px; letter-spacing: -.01em; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .card .num { color: var(--green); font-weight: 800; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .price { font-size: 26px; font-weight: 800; letter-spacing: -.03em; margin: 12px 0 4px; }
+    .price small { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .list { margin: 14px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; }
+    .list li { padding: 7px 0 7px 24px; position: relative; border-top: 1px solid rgba(255,255,255,.05); }
+    .list li:first-child { border-top: 0; }
+    .list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+    .case { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .case-top { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .case-top strong { font-size: 14px; }
+    .case-top span { color: var(--muted); font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    td { color: #d9e7de; }
+    .tag { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(126,226,168,.1); color: var(--green); border: 1px solid rgba(126,226,168,.2); }
+    .agency { background: linear-gradient(135deg, rgba(53,185,122,.16), rgba(17,27,23,.95) 55%); border: 1px solid rgba(126,226,168,.28); }
+    .agency .grid-2 { align-items: center; }
+    .agency h2 { margin-bottom: 12px; }
+    .agency p { color: #cfe3d6; }
+    .steps { counter-reset: step; }
+    .step { position: relative; padding-left: 52px; }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; left: 0; top: 0; width: 36px; height: 36px; border-radius: 10px;
+      display: grid; place-items: center; background: rgba(126,226,168,.1); color: var(--green);
+      border: 1px solid rgba(126,226,168,.25); font-weight: 800;
+    }
+    .step h3 { margin: 0 0 6px; font-size: 16px; }
+    .step p { margin: 0; color: var(--muted); font-size: 14px; }
+    .contact { text-align: center; padding: 64px 0 40px; }
+    .contact h2 { margin-bottom: 12px; }
+    .contact p { color: var(--muted); max-width: 620px; margin: 0 auto 24px; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 18px; }
+    .contact-note { color: var(--muted); font-size: 13px; }
+    footer { border-top: 1px solid var(--line); padding: 22px 0 34px; color: var(--muted); font-size: 13px; }
+    .footer-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .grid-4 { grid-template-columns: 1fr; }
+      .hero { padding-top: 40px; }
+      .section-head { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">
+      <span class="logo-mark">k.</span>
+      <span>kiwi automation</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Услуги</a>
+      <a href="#case">Кейс</a>
+      <a href="#prices">Цены</a>
+      <a href="#agencies">Агентствам</a>
+    </nav>
+    <a class="btn btn-primary" href="https://t.me/kiwiwiskis" target="_blank" rel="noopener">Написать в Telegram</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> Автоматизация данных и рутины</div>
+      <h1>Рутина должна работать <span class="accent">сама.</span></h1>
+      <p class="lead">Парсинг в Excel, автоматические отчёты, Telegram-боты и интеграции. Беру техническую часть — вы занимаетесь бизнесом. Работаю с компаниями и агентствами под их брендом.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://t.me/kiwiwiskis" target="_blank" rel="noopener">Бесплатный тест 1–2 часа</a>
+        <a class="btn btn-ghost" href="#case">Посмотреть кейс</a>
+      </div>
+      <div class="badges">
+        <span class="badge">Фикс цена и срок</span>
+        <span class="badge">Без предоплаты за тест</span>
+        <span class="badge">NDA и работа под вашим брендом</span>
+        <span class="badge">Python · API · Telegram</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Что автоматизирую</h2>
+        <p>Беру задачи, где нужно быстро получить результат: данные, отчёт, бот или интеграция.</p>
+      </div>
+      <div class="grid grid-4">
+        <div class="card">
+          <div class="num">01 / Данные</div>
+          <h3>Парсинг и выгрузка</h3>
+          <p>Сайты, каталоги, маркетплейсы → Excel, CSV или Google Sheets. Чистка, дедупликация, проверка.</p>
+        </div>
+        <div class="card">
+          <div class="num">02 / Отчёты</div>
+          <h3>Автоматизация отчётов</h3>
+          <p>Данные из таблиц, 1С, CRM или сайта → готовый отчёт по расписанию + уведомление.</p>
+        </div>
+        <div class="card">
+          <div class="num">03 / Боты</div>
+          <h3>Telegram/MAX-боты</h3>
+          <p>Заявки, каталог, оплата, уведомления, админка. Python, aiogram, API, CRM.</p>
+        </div>
+        <div class="card">
+          <div class="num">04 / Интеграции</div>
+          <h3>API и AI-ассистенты</h3>
+          <p>Связка сервисов, RAG по документам, AI-ответы, автоматизация процессов.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Пример работы</h2>
+        <p>Демо-парсер: публичный каталог → 60 строк → CSV + XLSX. Под клиента меняются поля и источник.</p>
+      </div>
+      <div class="case">
+        <div class="case-top">
+          <div><strong>Каталог книг → Excel</strong><br><span>60 позиций · 5 полей · пагинация · очистка</span></div>
+          <div><span class="tag">Python</span> <span class="tag">CSV</span> <span class="tag">XLSX</span></div>
+        </div>
+        <div style="overflow:auto">
+          <table>
+            <thead><tr><th>Название</th><th>Цена</th><th>Рейтинг</th><th>Наличие</th></tr></thead>
+            <tbody>
+              <tr><td>A Light in the Attic</td><td>£51.77</td><td>3/5</td><td><span class="tag">In stock</span></td></tr>
+              <tr><td>Tipping the Velvet</td><td>£53.74</td><td>1/5</td><td><span class="tag">In stock</span></td></tr>
+              <tr><td>Soumission</td><td>£50.10</td><td>1/5</td><td><span class="tag">In stock</span></td></tr>
+              <tr><td>Sharp Objects</td><td>£47.82</td><td>4/5</td><td><span class="tag">In stock</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="prices">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Цены</h2>
+        <p>Стартовые. Точная цена — после короткого брифа. Первый тест — бесплатно или за символическую сумму.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="num">Парсинг</div>
+          <h3>Данные в таблицу</h3>
+          <div class="price">от 5 000 ₽</div>
+          <ul class="list">
+            <li>до 1 000 позиций</li>
+            <li>Excel / CSV / Google Sheets</li>
+            <li>чистка и проверка</li>
+            <li>срок 1–2 дня</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="num">Автоматизация</div>
+          <h3>Отчёт на автопилоте</h3>
+          <div class="price">от 7 000 ₽</div>
+          <ul class="list">
+            <li>данные → обработка → отчёт</li>
+            <li>запуск по расписанию</li>
+            <li>уведомления в Telegram</li>
+            <li>срок 1–3 дня</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="num">Боты</div>
+          <h3>Telegram-бот</h3>
+          <div class="price">от 12 000 ₽</div>
+          <ul class="list">
+            <li>заявки и уведомления</li>
+            <li>каталог / оплата / CRM</li>
+            <li>админка и инструкция</li>
+            <li>срок 3–7 дней</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="agencies">
+    <div class="wrap">
+      <div class="card agency">
+        <div class="grid grid-2">
+          <div>
+            <h2>Агентствам и интеграторам</h2>
+            <p>Беру техническую часть под вашим брендом: парсинг, отчёты, ботов, интеграции, AI. Вы общаетесь с клиентом и оформляете — я делаю и сдаю в срок. NDA, фикс цена, без прямого контакта с вашим клиентом.</p>
+            <ul class="list">
+              <li>бесплатный тест 1–2 часа</li>
+              <li>работа по вашему ТЗ и шаблонам</li>
+              <li>сроки и цена фиксируются до старта</li>
+              <li>можно брать поток задач</li>
+            </ul>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:14px;color:var(--muted);margin-bottom:12px">Обсудить партнёрство</div>
+            <a class="btn btn-primary" href="https://t.me/kiwiwiskis" target="_blank" rel="noopener">Написать в Telegram</a>
+            <div style="margin-top:12px"><a class="btn btn-ghost" href="mailto:albirh200@gmail.com?subject=White-label%20автоматизация">Отправить письмо</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Как работаем</h2>
+        <p>Короткий цикл: бриф → тест → работа → сдача. Без долгих созвонов, если не нужны.</p>
+      </div>
+      <div class="grid grid-4 steps">
+        <div class="card step"><h3>Бриф</h3><p>15 минут в тексте: что есть, что нужно, срок.</p></div>
+        <div class="card step"><h3>Тест</h3><p>1–2 часа: показываю подход на небольшом объёме.</p></div>
+        <div class="card step"><h3>Работа</h3><p>Фикс цена и срок, промежуточный результат.</p></div>
+        <div class="card step"><h3>Сдача</h3><p>Файлы, код, инструкция, 2 правки.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contacts">
+    <div class="wrap">
+      <div class="eyebrow" style="justify-content:center"><span class="dot"></span> На связи</div>
+      <h2>Расскажите задачу — <span class="accent">оценю за 15 минут.</span></h2>
+      <p>Напишите в Telegram или на почту: что нужно автоматизировать, какой объём и срок. Предложу решение и цену.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="https://t.me/kiwiwiskis" target="_blank" rel="noopener">Telegram @kiwiwiskis</a>
+        <a class="btn btn-ghost" href="mailto:albirh200@gmail.com">albirh200@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+79934103464">+7 993 410 34 64</a>
+        <a class="btn btn-ghost" href="https://wa.me/79934103464" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <div class="contact-note">Работаю удалённо · оплата по факту или по этапам · NDA по запросу</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Kiwi Automation</span>
+    <span>Парсинг · отчёты · Telegram-боты · интеграции</span>
+  </div>
+</footer>
+</body>
+</html>
