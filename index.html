@@ -1,35 +1,25 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
-  <script>try{var t=localStorage.getItem('kiwi-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kiwi Automation — автоматизация с человеческим лицом</title>
-  <meta name="description" content="Парсинг, отчёты, Telegram-боты и интеграции для бизнеса и агентств. Понятные цены, бесплатный тест 1–2 часа, работа без бесконечных зумов.">
-  <meta property="og:title" content="Kiwi Automation — рутина должна работать сама">
-  <meta property="og:description" content="Парсинг, отчёты, Telegram-боты и интеграции. Беру техническую часть — вы занимаетесь бизнесом.">
-  <meta property="og:type" content="website">
-  <meta name="theme-color" content="#0a110d">
+  <title>Kiwi Automation — парсинг, отчёты, Telegram-боты</title>
+  <meta name="description" content="Автоматизация для бизнеса и агентств: парсинг в Excel, отчёты, Telegram-боты. Понятные цены, бесплатный тест 1–2 часа.">
+  <meta name="theme-color" content="#f7f3e8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a110d;
-      --bg-soft: #0e1812;
-      --panel: #111d16;
-      --panel-2: #15241b;
-      --text: #f1f6ee;
-      --muted: #a9b9ab;
-      --kiwi: #b7e27a;
-      --kiwi-2: #8fce5b;
-      --kiwi-deep: #5e963f;
-      --cream: #f3f8e7;
-      --line: rgba(183, 226, 122, .18);
-      --line-strong: rgba(183, 226, 122, .38);
-      --radius: 22px;
-      --max: 1160px;
-      --shadow: 0 24px 70px rgba(0, 0, 0, .38);
+      --bg: #f7f3e8;
+      --card: #fffdf6;
+      --text: #152113;
+      --muted: #5f6f60;
+      --green: #4e8f35;
+      --green-2: #6fae4a;
+      --line: rgba(21, 33, 19, .13);
+      --line-strong: rgba(78, 143, 53, .35);
+      --max: 1040px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -41,790 +31,244 @@
       font-size: 16px;
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
-    button, input, textarea { font: inherit; }
-    .wrap { width: min(var(--max), calc(100% - 44px)); margin: 0 auto; }
-    .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
 
-    .bg {
-      position: fixed; inset: 0; z-index: -2; pointer-events: none;
-      background:
-        radial-gradient(900px 520px at 78% -8%, rgba(143, 206, 91, .16), transparent 62%),
-        radial-gradient(700px 420px at 0% 22%, rgba(183, 226, 122, .07), transparent 60%),
-        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
-      background-size: auto, auto, 64px 64px, 64px 64px;
+    header { padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo {
+      font-family: "Unbounded", sans-serif; font-size: 16px; font-weight: 600;
+      letter-spacing: -.05em; white-space: nowrap;
     }
-    .bg::after {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(1000px 600px at 50% 120%, rgba(94, 150, 63, .12), transparent 60%);
-    }
-
-    /* header */
-    .site-header { padding: 20px 0; position: relative; z-index: 5; }
-    .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.03em; }
-    .brand-mark {
-      width: 38px; height: 38px; border-radius: 12px;
-      background: linear-gradient(145deg, #eaf7c9, #b7e27a);
-      display: grid; place-items: center; overflow: hidden;
-      box-shadow: 0 8px 26px rgba(143, 206, 91, .22);
-    }
-    .brand-mark { font-family: "Unbounded", sans-serif; font-size: 17px; font-weight: 700; color: #1c3316; letter-spacing: -.1em; }
-    .brand-text { font-family: "Unbounded", "Manrope", sans-serif; font-size: 15px; letter-spacing: -.04em; }
-    .brand-text em { font-style: normal; color: var(--kiwi); }
-    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: 14px; font-weight: 600; }
-    .nav-links a { position: relative; }
-    .nav-links a::after {
-      content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 2px;
-      background: var(--kiwi); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
-    }
+    .logo span { color: var(--muted); font-weight: 500; }
+    .logo i { color: var(--green); font-style: normal; }
+    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: 14px; font-weight: 700; }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 13px 19px; border-radius: 13px; font-weight: 800; font-size: 14px;
-      border: 1px solid var(--line); background: rgba(17, 29, 22, .82); color: var(--text);
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
-      white-space: nowrap; cursor: pointer;
-    }
-    .btn:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: 0 14px 34px rgba(0,0,0,.28); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--kiwi), var(--kiwi-2));
-      color: #0a130b; border-color: transparent;
-      box-shadow: 0 12px 30px rgba(143, 206, 91, .18);
-    }
-    .btn-primary:hover { background: linear-gradient(135deg, #c9ef92, #9ed86a); }
-    .btn-ghost { background: rgba(17, 29, 22, .55); }
-    .theme-toggle {
-      width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line);
-      background: rgba(17, 29, 22, .55); color: var(--text); display: grid; place-items: center;
-      cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease;
-    }
-    .theme-toggle:hover { transform: translateY(-2px); border-color: var(--line-strong); }
-    .theme-toggle svg { width: 18px; height: 18px; }
-    .theme-toggle .icon-sun { display: none; }
-    .theme-toggle .icon-moon { display: block; }
-    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
-    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-
-    /* hero */
-    .hero { padding: 62px 0 30px; }
-    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 46px; align-items: center; }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 9px;
-      color: var(--kiwi); font-weight: 800; font-size: 12px;
-      letter-spacing: .14em; text-transform: uppercase; margin-bottom: 16px;
-    }
-    .eyebrow.center { justify-content: center; }
-    .pulse {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--kiwi);
-      box-shadow: 0 0 0 5px rgba(183, 226, 122, .12);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.72); opacity: .65; } }
-    h1, h2, h3 { font-family: "Unbounded", "Manrope", sans-serif; font-weight: 600; letter-spacing: -.04em; }
-    h1 { font-size: clamp(40px, 6.2vw, 74px); line-height: 1.03; margin: 0 0 22px; }
-    h1 .accent { color: var(--kiwi); }
-    .lead { font-size: clamp(17px, 1.8vw, 20px); color: var(--muted); max-width: 620px; margin: 0 0 28px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
-    .badges span {
-      font-size: 12.5px; color: var(--muted); padding: 8px 12px;
-      border: 1px solid var(--line); border-radius: 999px; background: rgba(17,29,22,.65);
-    }
-
-    .hero-art { position: relative; min-height: 360px; display: grid; place-items: center; }
-    .art-window {
-      width: min(100%, 430px); border: 1px solid var(--line); border-radius: 24px;
-      background: linear-gradient(160deg, rgba(21,36,27,.96), rgba(12,21,16,.96));
-      box-shadow: var(--shadow); padding: 0; overflow: hidden; position: relative;
-      transform: rotate(-1.2deg);
-    }
-    .window-bar {
-      display: flex; align-items: center; gap: 7px; padding: 13px 16px;
-      border-bottom: 1px solid rgba(255,255,255,.06); color: var(--muted); font-size: 12px;
-    }
-    .window-bar i { width: 9px; height: 9px; border-radius: 50%; background: #3a4a3d; display: inline-block; }
-    .window-bar i:nth-child(1) { background: #b7e27a; }
-    .window-bar i:nth-child(2) { background: #6d8f62; }
-    .window-bar em { font-style: normal; margin-left: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-    .code { padding: 20px 22px 24px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; line-height: 1.9; color: #d7e8cd; }
-    .code b { color: var(--kiwi); font-weight: 700; }
-    .code i { color: #f0c987; font-style: normal; }
-    .code .indent { padding-left: 20px; }
-    .code .muted { color: #7f9584; margin-top: 10px; }
-    .art-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: -14px; position: relative; z-index: 2; padding: 0 8px; }
-    .art-chip {
-      position: static; display: flex; align-items: center; gap: 8px;
-      padding: 10px 13px; border-radius: 13px; background: #f3f8e7; color: #142013;
-      font-size: 12.5px; font-weight: 800; box-shadow: 0 14px 30px rgba(0,0,0,.28);
-      animation: float 5.4s ease-in-out infinite;
-    }
-    .art-chip--done span { color: #2f7d2e; font-size: 15px; }
-    .art-chip--kiwi { animation-delay: -2.2s; }
-    .chip-dot { width: 8px; height: 8px; border-radius: 50%; background: #4e8f35; display: inline-block; }
-    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .art-note {
-      position: absolute; right: 4px; top: 4px; color: var(--muted); font-size: 12.5px;
-      background: rgba(10,17,13,.8); border: 1px solid var(--line); border-radius: 999px; padding: 7px 11px;
-      transform: rotate(2deg);
-    }
-
-    /* strip */
-    .strip { border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); padding: 18px 0; margin: 18px 0 0; }
-    .strip-inner { display: flex; flex-wrap: wrap; gap: 12px 30px; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .02em; }
-    .strip-inner span { display: inline-flex; align-items: center; gap: 8px; }
-    .strip-inner span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--kiwi-2); }
-
-    /* sections */
-    section { padding: 72px 0; }
-    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 28px; }
-    h2 { font-size: clamp(26px, 3.5vw, 42px); line-height: 1.1; margin: 0; }
-    .section-head p { color: var(--muted); max-width: 520px; margin: 0; font-size: 15.5px; }
-
-    /* bento */
-    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-    .bento-card {
-      grid-column: span 2; background: linear-gradient(180deg, rgba(21,36,27,.92), rgba(14,24,18,.94));
-      border: 1px solid var(--line); border-radius: var(--radius); padding: 22px;
-      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-      position: relative; overflow: hidden; min-height: 210px;
-    }
-    .bento-card:hover { transform: translateY(-6px); border-color: var(--line-strong); box-shadow: var(--shadow); }
-    .bento-card.span-3 { grid-column: span 3; }
-    .bento-card.accent { background: linear-gradient(155deg, rgba(143,206,91,.15), rgba(17,29,22,.96) 55%); border-color: rgba(183,226,122,.3); }
-    .bento-num {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 34px; height: 34px; border-radius: 10px; background: rgba(183,226,122,.12);
-      color: var(--kiwi); font-family: "Unbounded", sans-serif; font-size: 11px; font-weight: 700;
-      border: 1px solid rgba(183,226,122,.24); margin-bottom: 14px;
+      padding: 12px 18px; border-radius: 11px; border: 1px solid var(--line);
+      background: var(--card); color: var(--text); font-weight: 800; font-size: 14px;
+      transition: .18s ease; white-space: nowrap;
     }
-    .bento-card h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.03em; }
-    .bento-card p { margin: 0; color: var(--muted); font-size: 14px; max-width: 420px; }
-    .bento-visual { margin-top: 18px; }
+    .btn:hover { transform: translateY(-1px); border-color: var(--line-strong); }
+    .btn-primary { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn-primary:hover { background: var(--green-2); border-color: var(--green-2); }
+    .btn-ghost { background: transparent; }
 
-    .mini-table { border: 1px solid rgba(255,255,255,.07); border-radius: 12px; overflow: hidden; font-size: 11.5px; }
-    .mini-row { display: grid; grid-template-columns: 1.4fr .7fr .8fr; gap: 8px; padding: 8px 10px; border-top: 1px solid rgba(255,255,255,.05); color: #d8e6d4; }
-    .mini-row:first-child { border-top: 0; background: rgba(183,226,122,.1); color: var(--kiwi); font-weight: 800; }
-    .mini-row span:last-child { text-align: right; }
-    .pill { display: inline-block; padding: 2px 7px; border-radius: 999px; background: rgba(183,226,122,.12); color: var(--kiwi); font-size: 10.5px; }
-
-    .mini-chat { display: flex; flex-direction: column; gap: 8px; max-width: 300px; }
-    .bubble { max-width: 88%; padding: 9px 12px; border-radius: 13px; font-size: 12.5px; line-height: 1.35; }
-    .bubble.in { background: rgba(255,255,255,.07); border-bottom-left-radius: 4px; color: #dbe8d7; }
-    .bubble.out { margin-left: auto; background: rgba(183,226,122,.16); border: 1px solid rgba(183,226,122,.22); border-bottom-right-radius: 4px; color: #e9f4df; }
-    .bubble.typing { display: inline-flex; gap: 4px; width: 58px; }
-    .bubble.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--kiwi); opacity: .7; animation: blink 1.2s infinite; }
-    .bubble.typing i:nth-child(2) { animation-delay: .2s; }
-    .bubble.typing i:nth-child(3) { animation-delay: .4s; }
-    @keyframes blink { 0%,80%,100% { opacity: .25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-2px); } }
-
-    .bars { display: flex; align-items: end; gap: 8px; height: 74px; margin-top: 8px; }
-    .bars i { display: block; flex: 1; border-radius: 6px 6px 3px 3px; background: linear-gradient(180deg, var(--kiwi), rgba(143,206,91,.25)); min-height: 10px; }
-    .bars i:nth-child(1) { height: 38%; } .bars i:nth-child(2) { height: 64%; } .bars i:nth-child(3) { height: 48%; }
-    .bars i:nth-child(4) { height: 82%; } .bars i:nth-child(5) { height: 58%; } .bars i:nth-child(6) { height: 92%; }
-    .bar-labels { display: flex; justify-content: space-between; color: #7f9584; font-size: 10px; margin-top: 6px; }
-
-    .code-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-    .code-chips span { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--kiwi); border: 1px solid rgba(183,226,122,.24); background: rgba(183,226,122,.08); border-radius: 8px; padding: 6px 8px; }
-    .ai-bubble { display: flex; gap: 8px; align-items: start; padding: 10px 12px; border: 1px solid rgba(183,226,122,.2); border-radius: 12px; background: rgba(183,226,122,.07); font-size: 12.5px; color: #d9e8d4; }
-    .ai-bubble b { color: var(--kiwi); }
-    .ai-mark { display: inline-flex; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 8px; background: rgba(183,226,122,.14); color: var(--kiwi); font-size: 10px; font-weight: 900; letter-spacing: .04em; flex: 0 0 auto; }
-
-    /* case */
-    .case-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; align-items: center; }
-    .sheet-mock, .phone-mock { border: 1px solid var(--line); background: linear-gradient(160deg, rgba(21,36,27,.96), rgba(11,19,14,.96)); box-shadow: var(--shadow); }
-    .sheet-mock { border-radius: 20px; overflow: hidden; }
-    .mock-top { display: flex; align-items: center; gap: 7px; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,.06); color: var(--muted); font-size: 11.5px; }
-    .mock-dots { display: inline-flex; gap: 5px; margin-right: 8px; }
-    .mock-dots i { width: 8px; height: 8px; border-radius: 50%; background: #3a4a3d; }
-    .mock-dots i:nth-child(1) { background: #b7e27a; } .mock-dots i:nth-child(2) { background: #6d8f62; }
-    .sheet-tabs { display: flex; gap: 6px; padding: 10px 14px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
-    .sheet-tabs span { padding: 7px 12px; font-size: 11.5px; color: var(--muted); border-radius: 8px 8px 0 0; }
-    .sheet-tabs span.active { background: rgba(183,226,122,.12); color: var(--kiwi); border: 1px solid rgba(183,226,122,.18); border-bottom-color: transparent; }
-    .sheet-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-    .sheet-table th { text-align: left; padding: 8px 14px; color: #8ea793; font-weight: 700; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; background: rgba(183,226,122,.07); }
-    .sheet-table td { padding: 8px 14px; border-top: 1px solid rgba(255,255,255,.05); color: #d8e6d4; }
-    .sheet-table td:last-child { text-align: right; }
-    .sheet-chart { padding: 12px 14px 16px; border-top: 1px solid rgba(255,255,255,.05); }
-    .chart-bars { display: flex; align-items: end; gap: 7px; height: 60px; }
-    .chart-bars i { flex: 1; border-radius: 5px 5px 2px 2px; background: linear-gradient(180deg, var(--kiwi), rgba(143,206,91,.2)); }
-    .chart-bars i:nth-child(1) { height: 32%; } .chart-bars i:nth-child(2) { height: 58%; } .chart-bars i:nth-child(3) { height: 44%; }
-    .chart-bars i:nth-child(4) { height: 76%; } .chart-bars i:nth-child(5) { height: 52%; } .chart-bars i:nth-child(6) { height: 90%; }
-
-    .phone-mock { width: min(100%, 290px); border-radius: 34px; padding: 10px; justify-self: center; transform: rotate(2deg); }
-    .phone-screen { background: #0e1812; border-radius: 26px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
-    .phone-notch { width: 78px; height: 5px; border-radius: 999px; background: #2a3a2d; margin: 7px auto 8px; }
-    .phone-head { display: flex; align-items: center; gap: 9px; padding: 8px 13px 10px; border-bottom: 1px solid rgba(255,255,255,.06); }
-    .phone-ava { width: 28px; height: 28px; border-radius: 50%; background: rgba(183,226,122,.16); display: grid; place-items: center; }
-    .phone-mono { font-family: "Unbounded", sans-serif; font-size: 13px; font-weight: 700; color: var(--kiwi); }
-    .phone-head b { font-size: 12px; display: block; }
-    .phone-head small { color: var(--kiwi); font-size: 10px; }
-    .phone-chat { padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 190px; }
-    .phone-chat .bubble { font-size: 11.5px; }
-    .file-chip { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 11px; border: 1px solid rgba(183,226,122,.22); background: rgba(183,226,122,.08); border-radius: 10px; font-size: 11px; color: #dfeed8; }
-    .file-chip span { color: var(--kiwi); font-weight: 800; }
-    .phone-input { margin: 0 12px 12px; padding: 9px 12px; border: 1px solid rgba(255,255,255,.07); border-radius: 999px; color: #6f8574; font-size: 11px; }
-
-    /* human */
-    .human { padding-top: 20px; }
-    .human-card {
-      display: grid; grid-template-columns: 150px 1fr auto; gap: 26px; align-items: center;
-      background: linear-gradient(135deg, rgba(183,226,122,.1), rgba(17,29,22,.96) 48%);
-      border: 1px solid rgba(183,226,122,.24); border-radius: 28px; padding: 28px 32px; box-shadow: var(--shadow);
+    .hero { padding: 82px 0 70px; }
+    .eyebrow {
+      color: var(--green); font-size: 12px; font-weight: 800;
+      letter-spacing: .13em; text-transform: uppercase; margin-bottom: 18px;
     }
-    .human-avatar { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #eaf7c9, #8fce5b 55%, #4e7f35); display: grid; place-items: center; position: relative; box-shadow: inset 0 0 0 6px rgba(10,17,13,.35); }
-    .avatar-mono { font-family: "Unbounded", sans-serif; font-size: 34px; font-weight: 600; color: #1c3316; letter-spacing: -.08em; }
-    .status-dot { position: absolute; right: 12px; bottom: 14px; width: 18px; height: 18px; border-radius: 50%; background: #a8e06f; border: 4px solid #0a110d; }
-    .human-copy h2 { font-size: clamp(24px, 3vw, 34px); margin-bottom: 10px; }
-    .human-copy p { color: var(--muted); margin: 0 0 12px; max-width: 600px; }
-    .human-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; color: var(--kiwi); font-weight: 700; font-size: 14px; }
-    .human-links span { color: #5f7464; }
-    .human-note { max-width: 190px; color: var(--muted); font-size: 14px; font-style: italic; border-left: 2px solid var(--kiwi); padding-left: 14px; }
+    h1, h2, h3 { font-family: "Unbounded", "Manrope", sans-serif; font-weight: 600; letter-spacing: -.045em; }
+    h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.04; margin: 0 0 22px; max-width: 820px; }
+    .accent { color: var(--green); }
+    .lead { font-size: 19px; color: var(--muted); max-width: 680px; margin: 0 0 28px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .meta { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    .meta span { display: inline-flex; align-items: center; gap: 7px; }
+    .meta span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green-2); }
 
-    /* agency */
-    .agency-card {
-      display: grid; grid-template-columns: 1.25fr .75fr; gap: 30px; align-items: center;
-      background: linear-gradient(135deg, rgba(94,150,63,.24), rgba(13,23,17,.97) 55%);
-      border: 1px solid rgba(183,226,122,.3); border-radius: 30px; padding: 34px; box-shadow: var(--shadow);
+    section { padding: 56px 0; border-top: 1px solid var(--line); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    h2 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.1; margin: 0; }
+    .section-head p { color: var(--muted); max-width: 430px; margin: 0; font-size: 15px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+      transition: .18s ease;
     }
-    .agency-card h2 { margin-bottom: 12px; }
-    .agency-card p { color: #d1e2d0; margin: 0 0 14px; }
-    .check-list { margin: 0; padding: 0; list-style: none; color: #d7e7d3; font-size: 14px; }
-    .check-list li { padding: 6px 0 6px 24px; position: relative; }
-    .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--kiwi); font-weight: 900; }
-    .agency-cta { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .agency-badge { display: inline-flex; align-items: center; justify-content: center; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(183,226,122,.1); color: var(--kiwi); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .agency-cta .btn { min-width: 210px; }
+    .card:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .example { margin: 18px 0 0; color: var(--muted); font-size: 14px; }
+    .example b { color: var(--text); }
 
-    /* prices */
-    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .price-card {
-      background: linear-gradient(180deg, rgba(21,36,27,.94), rgba(13,23,17,.97));
-      border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
-      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-      position: relative; overflow: hidden;
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+      transition: .18s ease;
     }
-    .price-card:hover { transform: translateY(-6px); border-color: var(--line-strong); box-shadow: var(--shadow); }
-    .price-card .tag { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--kiwi); font-weight: 800; }
-    .price-card h3 { margin: 10px 0 6px; font-size: 19px; }
-    .price { font-family: "Unbounded", sans-serif; font-size: 28px; letter-spacing: -.04em; margin: 14px 0 4px; color: var(--text); }
-    .price small { font-family: "Manrope", sans-serif; font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
-    .price-list { margin: 14px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 13.5px; }
-    .price-list li { padding: 7px 0 7px 22px; position: relative; border-top: 1px solid rgba(255,255,255,.05); }
-    .price-list li:first-child { border-top: 0; }
-    .price-list li::before { content: "✓"; position: absolute; left: 0; color: var(--kiwi); font-weight: 900; }
-    .price-note { margin-top: 16px; color: var(--muted); font-size: 13.5px; }
-    .price-note a { color: var(--kiwi); font-weight: 700; }
+    .price-card:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+    .tag { color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .price { font-family: "Unbounded", sans-serif; font-size: 26px; letter-spacing: -.04em; margin: 12px 0 4px; }
+    .price-card ul { margin: 12px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 13.5px; }
+    .price-card li { padding: 6px 0 6px 20px; position: relative; border-top: 1px solid var(--line); }
+    .price-card li:first-child { border-top: 0; }
+    .price-card li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 900; }
+    .note { margin: 16px 0 0; color: var(--muted); font-size: 13.5px; }
+    .note a { color: var(--green); font-weight: 800; }
 
-    /* process */
-    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: step; }
-    .step {
-      background: rgba(17,29,22,.72); border: 1px solid var(--line); border-radius: 18px; padding: 20px;
-      position: relative; padding-left: 58px; transition: transform .2s ease, border-color .2s ease;
-    }
-    .step:hover { transform: translateY(-4px); border-color: var(--line-strong); }
-    .step::before {
-      counter-increment: step; content: counter(step);
-      position: absolute; left: 18px; top: 20px; width: 28px; height: 28px; border-radius: 9px;
-      display: grid; place-items: center; background: rgba(183,226,122,.12); color: var(--kiwi);
-      border: 1px solid rgba(183,226,122,.24); font-family: "Unbounded", sans-serif; font-size: 11px; font-weight: 700;
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 20px 52px; position: relative; }
+    .step span {
+      position: absolute; left: 18px; top: 20px; width: 24px; height: 24px; border-radius: 8px;
+      display: grid; place-items: center; background: rgba(78,143,53,.1); color: var(--green);
+      font-size: 11px; font-weight: 800;
     }
     .step h3 { margin: 0 0 6px; font-size: 15px; }
     .step p { margin: 0; color: var(--muted); font-size: 13.5px; }
 
-    /* contact */
-    .contact { text-align: center; padding: 70px 0 54px; }
-    .contact h2 { margin-bottom: 14px; }
-    .contact p { color: var(--muted); max-width: 620px; margin: 0 auto 24px; }
-    .contact-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
-    .contact-note { color: var(--muted); font-size: 13px; }
-
-    footer { border-top: 1px solid rgba(255,255,255,.06); padding: 22px 0 34px; color: var(--muted); font-size: 13px; }
-    .footer-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
-    .footer-brand { display: inline-flex; align-items: center; gap: 8px; }
-
-    .badge-live { display: inline-flex; align-items: center; gap: 7px; }
-    .badge-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--kiwi); box-shadow: 0 0 0 4px rgba(183,226,122,.1); }
-    .case-story { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
-    .case-story div { border: 1px dashed rgba(183,226,122,.26); border-radius: 14px; padding: 12px 14px; color: var(--muted); font-size: 13.5px; background: rgba(17,29,22,.45); }
-    .case-story span { display: block; color: var(--kiwi); font-weight: 800; font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
-    .human-sign { margin-top: 10px; color: var(--muted); font-size: 13px; font-style: italic; }
-    .faq { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .faq details { background: rgba(17,29,22,.72); border: 1px solid var(--line); border-radius: 16px; padding: 0 18px; transition: border-color .2s ease, transform .2s ease; }
-    .faq details:hover { border-color: var(--line-strong); transform: translateY(-2px); }
-    .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 0; font-weight: 700; font-size: 15px; }
-    .faq summary::-webkit-details-marker { display: none; }
-    .faq summary span { color: var(--kiwi); font-size: 20px; line-height: 1; transition: transform .2s ease; }
-    .faq details[open] summary span { transform: rotate(45deg); }
-    .faq p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
-    [data-theme="light"] .case-story div,
-    [data-theme="light"] .faq details { background: #fffdf6; }
-
-    /* light theme */
-    [data-theme="light"] {
-      --bg: #f7f3e8;
-      --bg-soft: #f1f7e7;
-      --panel: #fffdf6;
-      --panel-2: #f1f7e7;
-      --text: #152113;
-      --muted: #5f6f60;
-      --kiwi: #4e8f35;
-      --kiwi-2: #6fae4a;
-      --kiwi-deep: #3f6f2b;
-      --cream: #fffdf6;
-      --line: rgba(21, 33, 19, .12);
-      --line-strong: rgba(63, 111, 43, .32);
-      --shadow: 0 24px 70px rgba(51, 70, 45, .14);
+    .agency {
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      background: #eaf5df; border: 1px solid rgba(78,143,53,.22); border-radius: 18px; padding: 26px;
     }
-    [data-theme="light"] .bg {
-      background:
-        radial-gradient(900px 520px at 78% -8%, rgba(143, 206, 91, .22), transparent 62%),
-        radial-gradient(700px 420px at 0% 22%, rgba(94, 150, 63, .12), transparent 60%),
-        linear-gradient(rgba(21, 33, 19, .045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(21, 33, 19, .045) 1px, transparent 1px);
-      background-size: auto, auto, 64px 64px, 64px 64px;
-    }
-    [data-theme="light"] .bg::after { background: radial-gradient(1000px 600px at 50% 120%, rgba(94, 150, 63, .1), transparent 60%); }
-    [data-theme="light"] .theme-toggle { background: #fffdf6; }
-    [data-theme="light"] .btn { background: #fffdf6; color: var(--text); box-shadow: 0 10px 24px rgba(51,70,45,.06); }
-    [data-theme="light"] .btn-ghost { background: #fffdf6; }
-    [data-theme="light"] .btn-primary { background: linear-gradient(135deg, var(--kiwi-2), var(--kiwi)); color: #fff; border-color: transparent; }
-    [data-theme="light"] .btn-primary:hover { background: linear-gradient(135deg, #7cbd55, #58a03b); }
-    [data-theme="light"] .badges span { background: #fffdf6; }
-    [data-theme="light"] .art-note { background: #fffdf6; color: #5f6f60; }
-    [data-theme="light"] .strip { border-color: rgba(21,33,19,.1); }
-    [data-theme="light"] .strip-inner { color: #5f6f60; }
-    [data-theme="light"] .bento-card { background: #fffdf6; }
-    [data-theme="light"] .bento-card.accent { background: linear-gradient(155deg, #e8f6d7, #fffdf6 60%); border-color: rgba(63,111,43,.24); }
-    [data-theme="light"] .bento-card p { color: #5f6f60; }
-    [data-theme="light"] .bento-num { background: #eef7e2; color: #3f6f2b; border-color: rgba(63,111,43,.22); }
-    [data-theme="light"] .mini-table { border-color: rgba(21,33,19,.12); }
-    [data-theme="light"] .mini-row { color: #2b3a2a; border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .mini-row:first-child { background: #eef7e2; color: #3f6f2b; }
-    [data-theme="light"] .pill { background: #e3f2d2; color: #3f6f2b; }
-    [data-theme="light"] .bubble.in { background: #eef5e6; color: #2b3a2a; }
-    [data-theme="light"] .bubble.out { background: #dff0cf; color: #1e3418; border-color: rgba(63,111,43,.2); }
-    [data-theme="light"] .bubble.typing i { background: #4e8f35; }
-    [data-theme="light"] .code-chips span { color: #3f6f2b; background: #eef7e2; border-color: rgba(63,111,43,.22); }
-    [data-theme="light"] .ai-bubble { background: #eef7e2; border-color: rgba(63,111,43,.2); color: #2b3a2a; }
-    [data-theme="light"] .ai-bubble b { color: #3f6f2b; }
-    [data-theme="light"] .sheet-mock, [data-theme="light"] .phone-mock { background: #fffdf6; }
-    [data-theme="light"] .mock-top { color: #5f6f60; border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .sheet-tabs { border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .sheet-tabs span { color: #5f6f60; }
-    [data-theme="light"] .sheet-tabs span.active { background: #eef7e2; color: #3f6f2b; border-color: rgba(63,111,43,.2); }
-    [data-theme="light"] .sheet-table th { background: #eef7e2; color: #5f6f60; }
-    [data-theme="light"] .sheet-table td { color: #2b3a2a; border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .sheet-chart { border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .phone-screen { background: #f4f8ee; border-color: rgba(21,33,19,.1); }
-    [data-theme="light"] .phone-notch { background: #c9d8c2; }
-    [data-theme="light"] .phone-head { border-color: rgba(21,33,19,.08); }
-    [data-theme="light"] .phone-input { border-color: rgba(21,33,19,.1); color: #7f9584; }
-    [data-theme="light"] .file-chip { background: #eef7e2; border-color: rgba(63,111,43,.2); color: #2b3a2a; }
-    [data-theme="light"] .human-card { background: linear-gradient(135deg, #e8f6d7, #fffdf6 55%); border-color: rgba(63,111,43,.22); }
-    [data-theme="light"] .human-copy p { color: #5f6f60; }
-    [data-theme="light"] .human-links { color: #3f6f2b; }
-    [data-theme="light"] .human-note { color: #5f6f60; }
-    [data-theme="light"] .agency-card { background: linear-gradient(135deg, #e4f4d2, #fffdf6 60%); border-color: rgba(63,111,43,.24); }
-    [data-theme="light"] .agency-card p { color: #5f6f60; }
-    [data-theme="light"] .check-list { color: #2b3a2a; }
-    [data-theme="light"] .price-card { background: #fffdf6; }
-    [data-theme="light"] .price-list { color: #5f6f60; }
-    [data-theme="light"] .step { background: #fffdf6; }
-    [data-theme="light"] .step p { color: #5f6f60; }
-    [data-theme="light"] .contact p, [data-theme="light"] .contact-note, [data-theme="light"] .price-note, [data-theme="light"] footer { color: #5f6f60; }
-    [data-theme="light"] .lead, [data-theme="light"] .section-head p { color: #5f6f60; }
-    [data-theme="light"] .brand-text { color: #152113; }
-    [data-theme="light"] .nav-links { color: #5f6f60; }
-    [data-theme="light"] .nav-links a:hover { color: #152113; }
-    [data-theme="light"] .art-window { border-color: rgba(21,33,19,.14); }
+    .agency h2 { font-size: 24px; margin-bottom: 6px; }
+    .agency p { color: var(--muted); margin: 0; max-width: 560px; font-size: 14.5px; }
 
-    @media (max-width: 980px) {
-      .hero-grid { grid-template-columns: 1fr; gap: 26px; }
-      .hero-art { min-height: 320px; }
-      .art-window { transform: none; }
-      .case-grid { grid-template-columns: 1fr; }
-      .phone-mock { transform: none; }
-      .human-card { grid-template-columns: 120px 1fr; }
-      .human-avatar { width: 120px; height: 120px; }
-      .human-note { grid-column: 1 / -1; max-width: none; }
-      .agency-card { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 760px) {
+    .contact { text-align: center; padding: 66px 0; }
+    .contact h2 { margin-bottom: 12px; }
+    .contact p { color: var(--muted); margin: 0 auto 22px; max-width: 560px; }
+    .contact-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .contact-note { margin-top: 14px; color: var(--muted); font-size: 13px; }
+
+    footer { border-top: 1px solid var(--line); padding: 20px 0 30px; color: var(--muted); font-size: 13px; }
+    .footer-row { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+
+    @media (max-width: 800px) {
       .nav-links { display: none; }
-      .site-header .btn-primary { display: none; }
-      .brand-text { white-space: nowrap; font-size: 13px; }
-      .nav { gap: 10px; }
-      .bento { grid-template-columns: repeat(2, 1fr); }
-      .bento-card, .bento-card.span-3, .bento-card.span-2 { grid-column: span 1; }
-      .price-grid { grid-template-columns: 1fr; }
-      .case-story, .faq { grid-template-columns: 1fr; }
-      .section-head { flex-direction: column; align-items: start; }
-      .human-card { grid-template-columns: 1fr; text-align: left; }
-      .human-avatar { width: 104px; height: 104px; }
+      .section-head { flex-direction: column; align-items: start; gap: 8px; }
+      .grid-3, .steps { grid-template-columns: 1fr; }
+      .agency { flex-direction: column; align-items: start; }
+      .hero { padding: 56px 0 48px; }
+      .lead { font-size: 17px; }
     }
-    @media (max-width: 520px) {
+    @media (max-width: 480px) {
       .wrap { width: calc(100% - 32px); }
-      .bento { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr; }
-      .hero { padding-top: 40px; }
-      .art-chip--done { right: -6px; }
-      .art-chip--kiwi { left: -6px; }
-      .art-note { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-      html { scroll-behavior: auto; }
+      .nav { gap: 10px; }
+      .logo { font-size: 14px; }
+      .btn { padding: 10px 13px; font-size: 13px; }
+      h1 { font-size: 34px; }
     }
   </style>
 </head>
 <body>
-<div class="bg"></div>
 
-<header class="site-header">
+<header>
   <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="Kiwi Automation">
-      <span class="brand-mark">k.</span>
-      <span class="brand-text">kiwi <em>automation</em></span>
-    </a>
-    <nav class="nav-links" aria-label="Навигация">
+    <a class="logo" href="#top">kiwi<span> automation</span><i>.</i></a>
+    <nav class="nav-links">
       <a href="#services">Услуги</a>
-      <a href="#case">Пример</a>
       <a href="#prices">Цены</a>
       <a href="#agencies">Агентствам</a>
+      <a href="#contacts">Контакты</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:8px">
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему">
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>
-      </button>
-      <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Написать в Telegram</a>
-    </div>
+    <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Telegram</a>
   </div>
 </header>
 
 <main id="top">
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="pulse"></span> автоматизация с человеческим лицом</div>
-        <h1>Рутина должна<br>работать <span class="accent">сама.</span></h1>
-        <p class="lead">Парсинг, отчёты, Telegram-боты и интеграции. Беру техническую часть — вы занимаетесь бизнесом. Объясняю простыми словами и остаюсь на связи после сдачи.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Бесплатный тест 1–2 часа</a>
-          <a class="btn btn-ghost" href="#case">Посмотреть, как это работает</a>
-        </div>
-        <div class="badges">
-          <span>Фикс цена и срок</span>
-          <span>Без предоплаты за тест</span>
-          <span>NDA и white-label</span>
-          <span class="badge-live">Беру 1–2 проекта в месяц</span>
-        </div>
+    <div class="wrap">
+      <div class="eyebrow">Автоматизация для бизнеса и агентств</div>
+      <h1>Рутина должна <span class="accent">работать сама.</span></h1>
+      <p class="lead">Парсинг, отчёты, Telegram-боты и интеграции. Беру техническую часть — вы занимаетесь бизнесом. Объясняю простыми словами и показываю результат до оплаты.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Бесплатный тест 1–2 часа</a>
+        <a class="btn btn-ghost" href="#prices">Посмотреть цены</a>
       </div>
-
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-note">«Покажу результат до оплаты»</div>
-        <div class="art-window">
-          <div class="window-bar"><i></i><i></i><i></i><em>parser.py</em></div>
-          <div class="code">
-            <div><b>def</b> <i>parse</i>(url):</div>
-            <div class="indent">rows = collect(url)</div>
-            <div class="indent"><b>return</b> clean(rows)</div>
-            <div class="muted"># 60 строк · CSV + XLSX</div>
-          </div>
-        </div>
-        <div class="art-chips">
-          <div class="art-chip art-chip--done">Готово: 60 строк <span>✓</span></div>
-          <div class="art-chip art-chip--kiwi"><span class="chip-dot"></span><span>на связи</span></div>
-        </div>
+      <div class="meta">
+        <span>Фикс цена и срок</span>
+        <span>2 правки</span>
+        <span>NDA</span>
+        <span>@Kvial</span>
       </div>
     </div>
   </section>
-
-  <div class="strip">
-    <div class="wrap strip-inner">
-      <span>Парсинг и данные</span>
-      <span>Отчёты на автопилоте</span>
-      <span>Telegram/MAX-боты</span>
-      <span>Интеграции и AI</span>
-      <span>Работаю с агентствами</span>
-    </div>
-  </div>
 
   <section id="services">
     <div class="wrap">
       <div class="section-head">
-        <div>
-          <div class="eyebrow">что можно отдать</div>
-          <h2>Что могу забрать у рутины</h2>
-        </div>
-        <p>Не «внедрить ИИ ради ИИ», а убрать конкретную ручную работу: сбор данных, отчёты, заявки, интеграции.</p>
+        <h2>Что делаю</h2>
+        <p>Три вещи, которые чаще всего просят. Если задачи нет в списке — напишите, скажу честно.</p>
       </div>
-
-      <div class="bento">
-        <article class="bento-card span-3">
-          <div class="bento-num">01</div>
-          <h3>Парсинг и выгрузка</h3>
-          <p>Сайты, каталоги, маркетплейсы → Excel, CSV или Google Sheets. Чистка, дедупликация, проверка.</p>
-          <div class="bento-visual mini-table">
-            <div class="mini-row"><span>Товар</span><span>Цена</span><span>Наличие</span></div>
-            <div class="mini-row"><span>Кресло Loft</span><span>12 900 ₽</span><span><span class="pill">есть</span></span></div>
-            <div class="mini-row"><span>Лампа Nord</span><span>4 500 ₽</span><span><span class="pill">есть</span></span></div>
-            <div class="mini-row"><span>Стол Oak</span><span>28 000 ₽</span><span><span class="pill">под заказ</span></span></div>
-          </div>
-        </article>
-
-        <article class="bento-card span-3 accent">
-          <div class="bento-num">02</div>
-          <h3>Telegram/MAX-боты</h3>
-          <p>Заявки, каталог, оплата, уведомления, админка. Python, aiogram, API, CRM.</p>
-          <div class="bento-visual mini-chat">
-            <div class="bubble in">Нужен парсер цен конкурентов</div>
-            <div class="bubble out">Сделаю. 60 позиций, 2 дня. Покажу тест до оплаты — ок?</div>
-            <div class="bubble in">Ок, давай</div>
-            <div class="bubble typing"><i></i><i></i><i></i></div>
-          </div>
-        </article>
-
-        <article class="bento-card">
-          <div class="bento-num">03</div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Парсинг</h3>
+          <p>Сайты и каталоги → Excel, CSV или Google Sheets. Чистка, проверка, 1–2 дня.</p>
+        </div>
+        <div class="card">
           <h3>Отчёты</h3>
-          <p>Данные из таблиц, 1С, CRM или сайта → готовый отчёт по расписанию + уведомление.</p>
-          <div class="bento-visual">
-            <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="bar-labels"><span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span>сб</span></div>
-          </div>
-        </article>
-
-        <article class="bento-card">
-          <div class="bento-num">04</div>
-          <h3>Интеграции</h3>
-          <p>Связка сервисов через API: сайт, CRM, таблицы, Telegram, 1С.</p>
-          <div class="bento-visual code-chips">
-            <span>{ API }</span><span>webhook</span><span>amoCRM</span><span>Bitrix24</span>
-          </div>
-        </article>
-
-        <article class="bento-card">
-          <div class="bento-num">05</div>
-          <h3>AI-ассистенты</h3>
-          <p>RAG по документам, ответы по базе знаний, автоматизация процессов.</p>
-          <div class="bento-visual ai-bubble"><span class="ai-mark">AI</span><div><b>Ассистент:</b> нашёл ответ в договоре, стр. 4. Показать?</div></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="case">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">пример</div>
-          <h2>Как это выглядит</h2>
+          <p>Данные из таблиц или сайта → отчёт по расписанию + уведомление. 1–3 дня.</p>
         </div>
-        <p>Демо-парсер: публичный каталог → 60 строк → CSV + XLSX. Под клиента меняются поля и источник.</p>
-      </div>
-
-      <div class="case-story">
-        <div><span>задача</span>Клиент присылает ссылку на каталог и список полей.</div>
-        <div><span>через 2 часа</span>Показываю таблицу на 10 строках — видно, что получится.</div>
-        <div><span>итог</span>60 строк, CSV + XLSX, инструкция и 2 правки.</div>
-      </div>
-
-      <div class="case-grid">
-        <div class="sheet-mock">
-          <div class="mock-top"><span class="mock-dots"><i></i><i></i><i></i></span><span>Google Sheets — demo</span></div>
-          <div class="sheet-tabs"><span class="active">Товары</span><span>Сводка</span><span>График</span></div>
-          <table class="sheet-table">
-            <thead><tr><th>Название</th><th>Цена</th><th>Наличие</th></tr></thead>
-            <tbody>
-              <tr><td>A Light in the Attic</td><td>£51.77</td><td><span class="pill">есть</span></td></tr>
-              <tr><td>Tipping the Velvet</td><td>£53.74</td><td><span class="pill">есть</span></td></tr>
-              <tr><td>Soumission</td><td>£50.10</td><td><span class="pill">есть</span></td></tr>
-              <tr><td>Sharp Objects</td><td>£47.82</td><td><span class="pill">есть</span></td></tr>
-            </tbody>
-          </table>
-          <div class="sheet-chart"><div class="chart-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        </div>
-
-        <div class="phone-mock">
-          <div class="phone-screen">
-            <div class="phone-notch"></div>
-            <div class="phone-head">
-              <span class="phone-ava"><span class="phone-mono">K</span></span>
-              <div><b>Kiwi Bot</b><small>онлайн</small></div>
-            </div>
-            <div class="phone-chat">
-              <div class="bubble in">Собери цены конкурентов</div>
-              <div class="bubble out">Готово: 60 позиций. Файл ниже.</div>
-              <div class="file-chip"><span>catalog.xlsx</span><span>XLSX</span></div>
-            </div>
-            <div class="phone-input">Сообщение…</div>
-          </div>
+        <div class="card">
+          <h3>Telegram-боты</h3>
+          <p>Заявки, уведомления, каталог, оплата. 3–7 дней.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="human">
-    <div class="wrap human-card">
-      <div class="human-avatar">
-        <span class="avatar-mono">KA</span>
-        <span class="status-dot" title="на связи"></span>
-      </div>
-      <div class="human-copy">
-        <div class="eyebrow">человек за кодом</div>
-        <h2>Привет, я инженер Kiwi Automation.</h2>
-        <p>Люблю, когда автоматизация не пугает, а экономит время. Объясняю без сложных терминов, показываю результат до оплаты и не пропадаю после сдачи. Если что-то непонятно — спрашивайте, это нормально.</p>
-        <div class="human-links">
-          <a href="https://t.me/Kvial" target="_blank" rel="noopener">@Kvial</a>
-          <span>·</span>
-          <a href="mailto:albirh200@gmail.com">albirh200@gmail.com</a>
-        </div>
-        <div class="human-sign">— инженер Kiwi Automation</div>
-      </div>
-      <div class="human-note">«Мне важно, чтобы вы пользовались результатом, а не боялись его».</div>
-    </div>
-  </section>
-
-  <section id="agencies">
-    <div class="wrap agency-card">
-      <div>
-        <div class="eyebrow">агентствам и интеграторам</div>
-        <h2>Вы продаёте — я делаю.</h2>
-        <p>Беру техническую часть под вашим брендом: парсинг, отчёты, ботов, интеграции, AI. Вы общаетесь с клиентом и оформляете — я делаю и сдаю в срок. NDA, фикс цена, без прямого контакта с вашим клиентом.</p>
-        <ul class="check-list">
-          <li>бесплатный тест 1–2 часа</li>
-          <li>работа по вашему ТЗ и шаблонам</li>
-          <li>сроки и цена фиксируются до старта</li>
-          <li>можно брать поток задач</li>
-        </ul>
-      </div>
-      <div class="agency-cta">
-        <div class="agency-badge">white-label · NDA</div>
-        <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Обсудить партнёрство</a>
-        <a class="btn btn-ghost" href="mailto:albirh200@gmail.com?subject=White-label%20автоматизация">Отправить письмо</a>
-        <div style="color:var(--muted);font-size:12px">отвечаю в течение дня</div>
-      </div>
+      <p class="example">Пример: собрал <b>60 позиций</b> с каталога в Excel за 2 часа. Результат показываю до оплаты.</p>
     </div>
   </section>
 
   <section id="prices">
     <div class="wrap">
       <div class="section-head">
-        <div>
-          <div class="eyebrow">цены</div>
-          <h2>Понятные стартовые цены</h2>
-        </div>
-        <p>Точная цена — после короткого брифа. Первый тест — бесплатно или за символическую сумму.</p>
+        <h2>Цены</h2>
+        <p>Стартовые. Точная — после короткого брифа. Первый тест — бесплатно.</p>
       </div>
-
-      <div class="price-grid">
+      <div class="grid-3">
         <div class="price-card">
-          <div class="tag">парсинг</div>
-          <h3>Данные в таблицу</h3>
+          <div class="tag">Парсинг</div>
           <div class="price">от 1 700 ₽</div>
-          <ul class="price-list">
+          <ul>
             <li>до 1 000 позиций</li>
-            <li>Excel / CSV / Google Sheets</li>
-            <li>чистка и проверка</li>
-            <li>срок 1–2 дня</li>
+            <li>Excel / CSV / Sheets</li>
+            <li>1–2 дня</li>
           </ul>
         </div>
         <div class="price-card">
-          <div class="tag">автоматизация</div>
-          <h3>Отчёт на автопилоте</h3>
+          <div class="tag">Отчёт</div>
           <div class="price">от 2 300 ₽</div>
-          <ul class="price-list">
-            <li>данные → обработка → отчёт</li>
+          <ul>
+            <li>данные → отчёт</li>
             <li>запуск по расписанию</li>
-            <li>уведомления в Telegram</li>
-            <li>срок 1–3 дня</li>
+            <li>1–3 дня</li>
           </ul>
         </div>
         <div class="price-card">
-          <div class="tag">боты</div>
-          <h3>Telegram-бот</h3>
+          <div class="tag">Telegram-бот</div>
           <div class="price">от 4 000 ₽</div>
-          <ul class="price-list">
+          <ul>
             <li>заявки и уведомления</li>
             <li>каталог / оплата / CRM</li>
-            <li>админка и инструкция</li>
-            <li>срок 3–7 дней</li>
+            <li>3–7 дней</li>
           </ul>
         </div>
       </div>
-      <div class="price-note">Мониторинг — от 3 000 ₽ + 800 ₽/мес. Интеграции — от 5 000 ₽. AI-ассистент — от 23 000 ₽. <a href="https://t.me/Kvial" target="_blank" rel="noopener">Напишите</a>, соберу смету за 15 минут.</div>
+      <p class="note">Мониторинг — от 3 000 ₽ + 800 ₽/мес. Интеграции — от 5 000 ₽. AI-ассистент — от 23 000 ₽. <a href="https://t.me/Kvial" target="_blank" rel="noopener">Напишите</a>, соберу смету за 15 минут.</p>
     </div>
   </section>
 
   <section id="process">
     <div class="wrap">
       <div class="section-head">
-        <div>
-          <div class="eyebrow">как я работаю</div>
-          <h2>Короткий цикл без бюрократии</h2>
-        </div>
-        <p>Уважаю ваше время: общаемся ёмко и по делу, без бесконечных зумов.</p>
+        <h2>Как работаем</h2>
+        <p>Коротко и по делу, без бесконечных зумов.</p>
       </div>
       <div class="steps">
-        <div class="step"><h3>Бриф</h3><p>15 минут в тексте: что есть, что нужно, срок.</p></div>
-        <div class="step"><h3>Тест</h3><p>1–2 часа: показываю подход на небольшом объёме.</p></div>
-        <div class="step"><h3>Работа</h3><p>Фикс цена и срок, промежуточный результат.</p></div>
-        <div class="step"><h3>Сдача</h3><p>Файлы, код, инструкция, 2 правки.</p></div>
+        <div class="step"><span>1</span><h3>Бриф</h3><p>15 минут в тексте: что есть, что нужно, срок.</p></div>
+        <div class="step"><span>2</span><h3>Тест</h3><p>1–2 часа: показываю подход на небольшом объёме.</p></div>
+        <div class="step"><span>3</span><h3>Работа</h3><p>Фикс цена и срок, 2 правки, инструкция.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="faq">
+  <section id="agencies">
     <div class="wrap">
-      <div class="section-head">
+      <div class="agency">
         <div>
-          <div class="eyebrow">вопросы</div>
-          <h2>Что обычно спрашивают</h2>
+          <h2>Агентствам</h2>
+          <p>Беру техническую часть под вашим брендом: парсинг, отчёты, боты, интеграции. NDA, фикс цена, без прямого контакта с вашим клиентом.</p>
         </div>
-        <p>Коротко о том, что важно перед стартом. Если вопроса нет в списке — просто напишите.</p>
-      </div>
-      <div class="faq">
-        <details>
-          <summary>А если я не разбираюсь в коде?<span>+</span></summary>
-          <p>Я объясняю простыми словами, отдаю инструкцию и остаюсь на связи. Вам не нужно программировать — достаточно описать задачу и проверить результат.</p>
-        </details>
-        <details>
-          <summary>Кто будет поддерживать?<span>+</span></summary>
-          <p>Я. После сдачи входит 2 правки. Дальше — поддержка по договорённости: обновления, доработки, мониторинг.</p>
-        </details>
-        <details>
-          <summary>Как оплачиваем?<span>+</span></summary>
-          <p>По этапам или по факту. Первый тест — бесплатно или за символическую сумму. Для больших задач — предоплата 30–50%.</p>
-        </details>
-        <details>
-          <summary>Это безопасно?<span>+</span></summary>
-          <p>Не передаю данные третьим лицам, работаю по NDA, не беру персональные данные и «серые» базы. Доступы — только те, что нужны для задачи.</p>
-        </details>
-        <details>
-          <summary>Сколько ждать?<span>+</span></summary>
-          <p>Парсер или отчёт — 1–3 дня. Telegram-бот — 3–7 дней. Интеграции и AI — по объёму, обычно 1–3 недели.</p>
-        </details>
-        <details>
-          <summary>А если не получится?<span>+</span></summary>
-          <p>Не беру задачу, если не уверен в результате. Если тест не подойдёт — вы ничего не платите. Это честнее, чем обещать всё подряд.</p>
-        </details>
+        <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Обсудить</a>
       </div>
     </div>
   </section>
 
   <section class="contact" id="contacts">
     <div class="wrap">
-      <div class="eyebrow center"><span class="pulse"></span> на связи</div>
       <h2>Расскажите задачу — <span class="accent">оценю за 15 минут.</span></h2>
-      <p>Напишите в Telegram или на почту: что нужно автоматизировать, какой объём и срок. Предложу решение и цену.</p>
+      <p>Напишите в Telegram или на почту. Отвечаю лично, без менеджеров.</p>
       <div class="contact-actions">
         <a class="btn btn-primary" href="https://t.me/Kvial" target="_blank" rel="noopener">Telegram @Kvial</a>
         <a class="btn btn-ghost" href="mailto:albirh200@gmail.com">albirh200@gmail.com</a>
@@ -836,21 +280,9 @@
 
 <footer>
   <div class="wrap footer-row">
-    <span class="footer-brand">© 2026 Kiwi Automation</span>
+    <span>© 2026 Kiwi Automation</span>
     <span>Парсинг · отчёты · Telegram-боты · интеграции</span>
   </div>
 </footer>
-<script>
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById('theme-toggle');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var next = root.dataset.theme === 'light' ? 'dark' : 'light';
-      root.dataset.theme = next;
-      try { localStorage.setItem('kiwi-theme', next); } catch (e) {}
-    });
-  })();
-</script>
 </body>
 </html>
